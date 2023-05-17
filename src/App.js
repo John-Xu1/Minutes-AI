@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+// import { ChakraProvider, Box, Center, Input, Button } from '@chakra-ui/react';
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -27,14 +28,13 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        
-        <input onChange={(e) => setPrompt(e.target.value)}></input>
-        <button onClick={() => {completePrompt(prompt)}}>Click to complete</button>
-      </header>
-    </div>
+      <div className='app'>
+        <section className='sideBar'>
+          <button>New Chat</button>
+        </section>
+        <section className='main'></section>
+      </div>
+    
   );
 }
 
