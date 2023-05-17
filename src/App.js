@@ -1,13 +1,22 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { AiOutlineSend } from "react-icons/ai";
+import TextBox from "./textBox";
 // import { ChakraProvider, Box, Center, Input, Button } from '@chakra-ui/react';
 
 function App() {
   const [prompt, setPrompt] = useState("");
+  const [chats, setChats] = useState([]);
+  const conversationRef = useRef(null);
+  useEffect(() => {
+    if (conversationRef.current) {
+      conversationRef.current.scrollTop = conversationRef.current.scrollHeight;
+    }
+  }, [chats]);
 
-  async function completePrompt(input) {
+  async function completePrompt(newPrompt) {
+    const updatedChatHistory = [...chats, newPrompt];
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -16,16 +25,15 @@ function App() {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: input,
-          },
-        ],
+        messages: updatedChatHistory,
       }),
     });
     const data = await response.json();
     console.log(data);
+    const reply = data.choices[0].message;
+    console.log(reply);
+    updatedChatHistory.push(reply);
+    setChats(updatedChatHistory);
   }
 
   return (
@@ -47,7 +55,18 @@ function App() {
       </section>
       <section className="main">
         <h1>XuPT</h1>
-        <ul id="conversation"></ul>
+        <div id="conversation" ref={conversationRef}>
+          <ul>
+            {chats.map((stuff, idx) => {
+              return stuff.role === "user" ? (
+                <TextBox content={stuff.content} role="user" />
+              ) : (
+                <TextBox content={stuff.content} role="assistant" />
+              );
+            })}
+          </ul>
+        </div>
+
         <div className="prompt">
           <input
             id="sendField"
@@ -57,18 +76,17 @@ function App() {
               setPrompt(e.target.value);
             }}
           />
-          <div id="sendButton">
-            <AiOutlineSend
-              id="sendIcon"
-              size={20}
-              onClick={() => {
-                let li = document.createElement("li");
-                let textNode = document.createTextNode(prompt);
-                li.appendChild(textNode);
-                document.getElementById("conversation").appendChild(li);
-                // completePrompt(prompt);
-              }}
-            />
+          <div
+            id="sendButton"
+            onClick={() => {
+              const message = { role: "user", content: `${prompt}` };
+              const updated = [...chats, message];
+              setChats(updated);
+              document.getElementById("sendField").value = "";
+              completePrompt(message);
+            }}
+          >
+            <AiOutlineSend id="sendIcon" size={20} />
           </div>
         </div>
       </section>
