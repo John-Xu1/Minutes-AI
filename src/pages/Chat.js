@@ -1,9 +1,8 @@
-import "./App.css";
+import "./Chat.css";
 import { useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { AiOutlineSend } from "react-icons/ai";
-import TextBox from "./textBox";
-// import { ChakraProvider, Box, Center, Input, Button } from '@chakra-ui/react';
+import TextBox from "../components/textBox.js";
 
 function App() {
   const [prompt, setPrompt] = useState("");
