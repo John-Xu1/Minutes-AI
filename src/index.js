@@ -3,10 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 // import Chat from "./pages/Chat.js";
 import Minutes from "./pages/Minutes.js";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Minutes />
+    <ChakraProvider>
+      <Minutes />
+    </ChakraProvider>
   </React.StrictMode>
 );
