@@ -1,30 +1,18 @@
 import "./Minutes.css";
 import generateMinutes from "../API/generateMinutes.js";
-import {
-  Center,
-  Flex,
-  Heading,
-  Text,
-  Box,
-  Input,
-  FormControl,
-  FormLabel,
-} from "@chakra-ui/react";
+import { Center, Flex, Heading, Text, FormControl } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import MinutesButton from "../components/MinutesButton";
 
 function Minutes() {
-  let selectedFile = null;
+  const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("No file selected");
   const fileUploadRef = useRef(null);
 
   function handleFileChange(event) {
-    selectedFile = event.target.files[0];
-    // console.log(selectedFile.name);
-    // console.log((window.URL || window.webkitURL).createObjectURL(selectedFile));
-    // document.getElementById("fileName").innerHTML = selectedFile.name;
-    setFileName(selectedFile.name);
+    setSelectedFile(event.target.files[0]);
+    setFileName(event.target.files[0].name);
   }
 
   function handleClick() {
@@ -35,9 +23,10 @@ function Minutes() {
 
   async function generate() {
     console.log("generating");
-    const fileInput = document.getElementById("fileUpload");
-    const minutes = await generateMinutes(fileInput.files[0]);
-    console.log(minutes);
+    console.log(selectedFile.name);
+    // const fileInput = document.getElementById("fileUpload");
+    // const minutes = await generateMinutes(fileInput.files[0]);
+    // console.log(minutes);
   }
 
   return (
@@ -81,40 +70,17 @@ function Minutes() {
             </Text>
           </Flex>
         </FormControl>
-        {/* <Input
-          w="80vw"
-          h="40vh"
-          border="dashed 3px #000"
-          borderColor="white"
-          type="file"
-          id="fileUpload"
-          display="none"
-        />
-
-        <Box
-          w="80vw"
-          h="40vh"
-          border="dashed 3px #000"
-          borderColor="white"
-        ></Box> */}
         {fileName === "No file selected" ? null : (
           <MinutesButton
             title="Create minutes"
             width={64}
             bgColor="white"
             color="#2D1212"
+            onClick={() => generate()}
           />
         )}
       </Flex>
     </Center>
-    // <div>
-    //   <link rel="stylesheet" href="./Minutes.css" />
-    //   <input type="file" id="fileUpload" onChange={changeName} />
-    //   <h1>Meeting Minutes</h1>
-    //   <p id="meetingMinutes"></p>
-    //   <button onClick={generate}>Generate Minutes</button>
-    //   <p id="minutes"></p>
-    // </div>
   );
 }
 

@@ -11,6 +11,7 @@ export default function MinutesButton(props) {
       fontSize="2xl"
       boxShadow="2xl"
       mt={8}
+      onClick={props.onClick}
     >
       {props.title}
     </Button>
