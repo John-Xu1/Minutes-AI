@@ -7,6 +7,7 @@ import {
   Text,
   FormControl,
   Progress,
+  Box,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
@@ -59,7 +60,7 @@ function Minutes() {
     console.log("finished minutes generation");
     console.log(minutes);
     setLoadingVal(0);
-
+    setMinutes(minutes);
     setLoading(false);
   }
 
@@ -76,43 +77,73 @@ function Minutes() {
         <Flex display="column" textAlign="center">
           <Heading color="white">Get detailed meeting mintues.</Heading>
           <Heading color="white">In minutes.</Heading>
-          <FormControl>
+          {minutes === "" ? (
+            <>
+              <FormControl>
+                <Flex
+                  w="80vw"
+                  h="40vh"
+                  border="dashed 3px #000"
+                  borderColor="white"
+                  borderRadius={16}
+                  p={2}
+                  cursor="pointer"
+                  _hover={{ borderColor: "gray.400" }}
+                  onClick={handleClick}
+                  direction="column"
+                  align="center"
+                  justify="center"
+                  mt={8}
+                >
+                  <input
+                    id="fileUpload"
+                    type="file"
+                    style={{ display: "none" }}
+                    ref={fileUploadRef}
+                    onChange={handleFileChange}
+                  />
+                  <FaCloudUploadAlt size={64} fill="white" />
+                  <Text color="white">
+                    {fileName ? fileName : "No file selected"}
+                  </Text>
+                </Flex>
+              </FormControl>
+              {fileName === "No file selected" ? null : (
+                <MinutesButton
+                  title="Create minutes"
+                  width={64}
+                  bgColor="white"
+                  color="#2D1212"
+                  onClick={() => generate()}
+                />
+              )}
+            </>
+          ) : (
             <Flex
               w="80vw"
-              h="40vh"
-              border="dashed 3px #000"
-              borderColor="white"
-              borderRadius={16}
-              p={2}
-              cursor="pointer"
-              _hover={{ borderColor: "gray.400" }}
-              onClick={handleClick}
+              h="60vh"
+              bgColor="white"
+              py={4}
+              px={16}
+              mt={8}
+              borderRadius={36}
               direction="column"
               align="center"
-              justify="center"
-              mt={8}
             >
-              <input
-                id="fileUpload"
-                type="file"
-                style={{ display: "none" }}
-                ref={fileUploadRef}
-                onChange={handleFileChange}
+              <Heading color="#FF0E4B">Your meeting minutes</Heading>
+              <Box overflow="auto" flex="1" mt={4}>
+                <Text whiteSpace="pre-wrap" textAlign="start" height="100%">
+                  {minutes}
+                </Text>
+              </Box>
+              <MinutesButton
+                title="Download"
+                width={64}
+                bgColor="#FF0E4B"
+                color="white"
+                onClick={() => console.log("download")}
               />
-              <FaCloudUploadAlt size={64} fill="white" />
-              <Text color="white">
-                {fileName ? fileName : "No file selected"}
-              </Text>
             </Flex>
-          </FormControl>
-          {fileName === "No file selected" ? null : (
-            <MinutesButton
-              title="Create minutes"
-              width={64}
-              bgColor="white"
-              color="#2D1212"
-              onClick={() => generate()}
-            />
           )}
         </Flex>
       ) : (
