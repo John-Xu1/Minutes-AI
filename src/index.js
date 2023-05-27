@@ -3,7 +3,19 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 // import Chat from "./pages/Chat.js";
 import Minutes from "./pages/Minutes.js";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+
+// const theme = extendTheme({
+//   components: {
+//     Progress: {
+//       baseStyle: {
+//         filledTrack: {
+//           bg: "#601E1E",
+//         },
+//       },
+//     },
+//   },
+// });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

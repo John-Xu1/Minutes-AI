@@ -1,7 +1,6 @@
 import transcribeAudio from "./transcribeAudio.js";
 
-async function generateMinutes(file) {
-  const transcript = await transcribeAudio(file);
+async function generateMinutes(transcript) {
   console.log("now generating minutes");
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
